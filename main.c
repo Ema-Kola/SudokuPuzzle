@@ -3,7 +3,38 @@
 #include <ctype.h>
 #include <string.h>
 
-
+/* A function to print the matrix containing the puzzle */
+void print(int N, int arr[N][N])
+{
+    int i, j;
+    int sq=sqrt(N);
+    if(N==9)
+        printf("-------------------------------------\n");
+    else
+        printf(" ---------------------------------------------------------------\n");
+        
+     for (i = 0; i < N; i++)
+      {
+          printf("|");
+          for (j = 0; j < N; j++){
+              printf("%d\t",arr[i][j]);
+              if (((j+1)%sq)==0)
+              {
+                  printf("|");
+              }
+          }
+              
+              
+         printf("\n");
+          if(((i+1)%sq)==0)
+          {
+              if(N==9)
+                  printf("-------------------------------------\n");
+              else
+                  printf(" ---------------------------------------------------------------\n");
+          }
+       }
+}
 
 
 
@@ -165,9 +196,69 @@ int solveSudoku(int N, int puzzle[N][N], int row, int col)
     return 0;
 }
 
+void terminalInput(int N, int grid[N][N]){
+    char input[50]; //string used to store user input
+    int  inputAsAnInteger;//used store the converted input  as an integer
+    
+    while(1){//loop 'infinitely'{
+        printf("Enter the puzzle (entering 'e' will terminate the program): \n");
+        int flag=1;
+        for(int i=0;i<N;i++){
+            for(int j=0;j<N;j++){
+                
+                scanf("%s",input);//get input from user
+                if(strcmp(input, "e")==0){
+                    return;
+                }
+                inputAsAnInteger=atoi(input);//convert input to integer
+                if (!isNumber(input))//if the input is not a number......
+                {
+                    flag=0;
+                }
+                else//input is a number
+                {
+                    inputAsAnInteger=atoi(input);//convert input to integer
+                    if(inputAsAnInteger<0 || inputAsAnInteger>N){
+                        flag=0;
+                    }else{
+                        grid[i][j]=inputAsAnInteger;
+                        
+                    }
+                }
+            }
+        }
+        if(flag==1 && isValidOriginal(N, grid)==1){
+            break;
+        }else{
+            printf("\nInvalid input entered. If you do not want to reenter the puzzle press 'e' \n");
+        }
+    }
 
-
-
+    printf("\nThe puzzle you entered: \n");
+    print(N, grid);
+    printf("\nIs this the correct puzzle?\n\
+If the puzzle is correct, press 1.\n\
+If you want to reenter the information, press 0.\n\
+Any other key will end the program. \n\
+    ");
+    
+    int x;
+    scanf("%d", &x);
+    if(x==1){
+        if (solveSudoku(N,grid, 0, 0)==1){
+            printf("\nThis is your solved puzzle: \n");
+            print(N,grid);
+            return;
+        }else{
+            printf("\nNo solution exists. ");
+            return;
+        }
+    }else if(x==0){
+           terminalInput(N, grid);
+    }else{
+            return;
+    }
+}
 
 
 
@@ -189,6 +280,7 @@ int main()
     }
 
     int grid[N][N];
+    terminalInput(N,grid);
 
 
     return 0;
