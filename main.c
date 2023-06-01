@@ -359,6 +359,11 @@ int test=0, failpos[N][N];
 
 int main()
 {
+	//if you want to test the 2 main solving features remove the two 
+	//below
+    //testing9x9();
+    //testing16x16();
+
     int N;
     printf("Welcome to Sudoku Solver! What size puzzle will we be solving today?");
     printf("\nPress 1-Size 9x9");
@@ -376,8 +381,7 @@ int main()
 
     int grid[N][N];
     terminalInput(N,grid);
-    //testing9x9();
-    //testing16x16();
+
 
     return 0;
 
